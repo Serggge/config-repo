@@ -1,2 +1,35 @@
-server:
-  port: 8085
+spring:
+  data:
+    redis:
+      host: redis
+      port: 6379
+      password:
+
+  mail:
+    host: smtp.mailbox.org
+    port: 447
+    username: serggge
+    password: secret
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+kafka:
+  configuration:
+    bootstrap-servers:
+      - broker-1:19092
+      - broker-2:19092
+    group-id: mail-sender
+    client-id: notification-service
+    topics: email-notification
+    sr-url: schema-registry
+
+scheduler:
+  enabled: true
+  delay: PT1M
+  batchSize: 20
+  lockAtLeastFor: PT1M
+  lockAtMostFor: PT5M
