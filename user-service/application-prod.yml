@@ -1,28 +1,11 @@
 server:
   port: 8090
 
-spring:
-  application:
-    name: user-service
-  liquibase:
-    enabled: true
-    change-log: classpath:db/changelog/master.yml
-
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://postgres:5432/userdb
+    url: jdbc:postgresql://postgres/userdb
     username: postgres
     password: postgres
-
-hibernate:
-  dialect: org.hibernate.dialect.PostgreSQLDialect
-  hbm2ddl:
-    auto: validate
-
-swagger:
-  app-name: user-service
-  app-description: User Api Example
-  app-version: 1.0
 
 kafka:
   configuration:
@@ -31,33 +14,7 @@ kafka:
       - broker-2
     topic-name: email-notification
     partitions: 2
-    srUrl: http://schema-registry:8081
+    srUrl: schema-registry
 
 scheduler:
   delay: 5000
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://discovery-service:8761/eureka/
-      
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,prometheus,metrics
-  endpoint:
-    prometheus:
-      access: read_only
-  metrics:
-    distribution.percentiles-histogram.http:
-      server.requests: true
-      client.requests: true
-  tracing:
-    enabled: true
-    sampling:
-      probability: 1.0
-  prometheus:
-    metrics:
-      export:
-        enabled: true
