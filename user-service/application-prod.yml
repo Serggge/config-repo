@@ -14,7 +14,7 @@ kafka:
       - broker-2:19092
     topic-name: email-notification
     partitions: 2
-    srUrl: schema-registry
+    srUrl: http://schema-registry:8081
 
 scheduler:
   delay: 5000
