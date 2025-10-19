@@ -10,8 +10,8 @@ server:
 kafka:
   configuration:
     bootstrap-servers:
-      - broker-1:29092
-      - broker-2:39092
+      - broker-1:9091
+      - broker-2:9091
     topic-name: email-notification
     partitions: 2
     srUrl: schema-registry
