@@ -25,7 +25,7 @@ kafka:
     group-id: mail-sender
     client-id: notification-service
     topics: email-notification
-    sr-url: schema-registry
+    sr-url: http://schema-registry:8081
 
 scheduler:
   enabled: true
