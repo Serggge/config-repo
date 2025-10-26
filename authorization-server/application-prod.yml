@@ -1,0 +1,13 @@
+configuration:
+  clients:
+    gateway-redirect-uri: http://localhost:8080/login/oauth2/code/gateway
+    gateway-secret: "{noop}secret"
+    user-service-secret: "{noop}verySecret"
+    mail-service-secret: "{noop}topSecret"
+
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://postgres-auth/accounts
+    username: postgres
+    password: postgres
