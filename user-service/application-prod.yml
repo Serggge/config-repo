@@ -1,20 +1,82 @@
 server:
-  port: 8090
+  port: 8070
 
-  datasource:
-    driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://postgres/userdb
-    username: postgres
-    password: postgres
-
-kafka:
-  configuration:
+configuration:
+  auth:
+    auth-server-url: http://authorization-server
+    client-secret: verySecret
+  services:
+    mail-service-uri: http://mail-service
+  kafka:
+    enabled: true
     bootstrap-servers:
       - broker-1:19092
       - broker-2:19092
     topic-name: email-notification
     partitions: 2
     srUrl: http://schema-registry:8081
+  scheduler:
+    enabled: true
+    delay: 3000
 
-scheduler:
-  delay: 5000
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://postgres/userdb
+    username: postgres
+    password: postgres
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/master.yml
+  security:
+    oauth2:
+      client:
+        registration:
+          user-service:
+            provider: oauth
+            client-id: user-service
+            client-authentication-method: client_secret_basic
+            client-secret: ${configuration.auth.client-secret}
+            authorization-grant-type: client_credentials
+            scope: openid
+        provider:
+          oauth:
+            authorization-uri: ${configuration.auth.auth-server-url}/oauth2/authorize
+            jwk-set-uri: ${configuration.auth.auth-server-url}/oauth2/jwks
+            token-uri: ${configuration.auth.auth-server-url}/oauth2/token
+  cloud:
+    openfeign:
+      oauth2:
+        enabled: true
+        clientRegistrationId: user-service
+    config:
+      fail-fast: true
+      discovery:
+        enabled: true
+        service-id: config-server
+    
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus,metrics
+  endpoint:
+    prometheus:
+      access: read_only
+  metrics:
+    distribution.percentiles-histogram.http:
+      server.requests: true
+      client.requests: true
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+swagger:
+  app-name: user-service
+  app-description: User Api Example
+  app-version: 1.0
